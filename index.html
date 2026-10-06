@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC Listening Practice Test</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .test-container { background: white; max-width: 850px; width: 100%; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        
+        /* Header & Timer Sticky */
+        .test-header { position: sticky; top: 0; background: white; padding: 15px 0; border-bottom: 2px solid #eaeaea; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
+        .timer { font-size: 1.2rem; font-weight: bold; color: #d9534f; background: #ffe6e6; padding: 8px 16px; border-radius: 20px; }
+        
+        /* User Info Form */
+        .student-info-card { background: #eef6fc; border: 1px solid #bce1f7; border-radius: 8px; padding: 20px; margin-top: 20px; }
+        .student-info-card h3 { margin-top: 0; color: #0275d8; margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 5px; color: #333; }
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
+        
+        .section-title { margin-top: 30px; color: #1a252f; border-bottom: 2px solid #3498db; padding-bottom: 8px; }
+        
+        /* Section / Audio Group */
+        .audio-group { background: #fafafa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-top: 20px; }
+        .audio-player-wrapper { margin-bottom: 15px; }
+        audio { width: 100%; outline: none; }
+        .audio-note { font-size: 0.85rem; color: #666; font-style: italic; margin-top: 4px; }
+        
+        /* Questions */
+        .question-card { margin-top: 15px; padding: 15px; background: white; border-radius: 6px; border-left: 4px solid #0275d8; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .question-title { font-weight: 600; margin-bottom: 10px; color: #333; }
+        .options-list { list-style: none; padding: 0; margin: 0; }
+        .option-item { margin-bottom: 8px; }
+        .option-item label { display: flex; align-items: center; cursor: pointer; padding: 8px 12px; border-radius: 4px; border: 1px solid #eee; transition: 0.2s; }
+        .option-item label:hover { background: #f0f7ff; }
+        .option-item input { margin-right: 10px; }
+        
+        /* Submit Button */
+        .submit-btn { width: 100%; margin-top: 30px; padding: 14px; font-size: 1.1rem; font-weight: bold; color: white; background-color: #28a745; border: none; border-radius: 6px; cursor: pointer; transition: 0.3s; }
+        .submit-btn:hover { background-color: #218838; }
+        .submit-btn:disabled { background-color: #6c757d; cursor: not-allowed; }
+        
+        /* Results */
+        .result-box { margin-top: 20px; padding: 20px; background: #e8f4f8; border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: bold; color: #0275d8; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="test-container">
+    <div class="test-header">
+        <h2>TOEIC Listening Practice Test</h2>
+        <div class="timer" id="timer">Thời gian: 20:00</div>
+    </div>
+
+    <!-- Ô THÔNG TIN HỌC VIÊN -->
+    <div class="student-info-card">
+        <h3>Thông Tin Học Viên</h3>
+        <div class="form-group">
+            <label for="fullname">Họ và Tên (*):</label>
+            <input type="text" id="fullname" placeholder="Ví dụ: Nguyễn Văn A" required>
+        </div>
+        <div class="form-group">
+            <label for="classname">Lớp (*):</label>
+            <input type="text" id="classname" placeholder="Ví dụ: TOEIC K12" required>
+        </div>
+    </div>
+
+    <form id="quizForm">
+        <!-- PART C: STAFFING CHANGES -->
+        <h2 class="section-title">PART C: Staffing Changes</h2>
+
+        <!-- Track 119 -->
+        <div class="audio-group">
+            <h3>Audio 119 (Questions 1 - 3)</h3>
+            <div class="audio-player-wrapper">
+                <audio class="test-audio" controls controlsList="nodownload">
+                    <source src="https://github.com/tuyetngan031196-ctrl/toeic-listening/raw/refs/heads/main/119%20Track119.mp3" type="audio/mpeg">
+                </audio>
+                <div class="audio-note">Lưu ý: Audio chỉ có thể nghe 1 lần duy nhất.</div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">1. What event has recently taken place?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q1" value="A"> (A) A sale</label></div>
+                    <div class="option-item"><label><input type="radio" name="q1" value="B"> (B) A merger</label></div>
+                    <div class="option-item"><label><input type="radio" name="q1" value="C"> (C) A meeting</label></div>
+                    <div class="option-item"><label><input type="radio" name="q1" value="D"> (D) A promotion</label></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">2. What is the man worried about?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q2" value="A"> (A) Moving his belongings</label></div>
+                    <div class="option-item"><label><input type="radio" name="q2" value="B"> (B) Selling all the inventory</label></div>
+                    <div class="option-item"><label><input type="radio" name="q2" value="C"> (C) Meeting a deadline</label></div>
+                    <div class="option-item"><label><input type="radio" name="q2" value="D"> (D) Contacting an applicant</label></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">3. What does Leslie say she will do?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q3" value="A"> (A) Take notes at a meeting</label></div>
+                    <div class="option-item"><label><input type="radio" name="q3" value="B"> (B) Assist with a move</label></div>
+                    <div class="option-item"><label><input type="radio" name="q3" value="C"> (C) Present sales results</label></div>
+                    <div class="option-item"><label><input type="radio" name="q3" value="D"> (D) Apply for a job</label></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Track 120 -->
+        <div class="audio-group">
+            <h3>Audio 120 (Questions 4 - 6)</h3>
+            <div class="audio-player-wrapper">
+                <audio class="test-audio" controls controlsList="nodownload">
+                    <source src="https://github.com/tuyetngan031196-ctrl/toeic-listening/raw/refs/heads/main/120%20Track120.mp3" type="audio/mpeg">
+                </audio>
+                <div class="audio-note">Lưu ý: Audio chỉ có thể nghe 1 lần duy nhất.</div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">4. What are the speakers discussing?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q4" value="A"> (A) An upcoming event</label></div>
+                    <div class="option-item"><label><input type="radio" name="q4" value="B"> (B) Working overtime</label></div>
+                    <div class="option-item"><label><input type="radio" name="q4" value="C"> (C) A difficult coworker</label></div>
+                    <div class="option-item"><label><input type="radio" name="q4" value="D"> (D) Work experience</label></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">5. What is suggested about the woman?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q5" value="A"> (A) She will be moving to another area.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q5" value="B"> (B) She has worked here for many years.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q5" value="C"> (C) She is in charge of all financial matters.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q5" value="D"> (D) She has managed new employee orientation before.</label></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">6. According to the man, what will happen soon?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q6" value="A"> (A) A conference will be held.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q6" value="B"> (B) A department will move.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q6" value="C"> (C) A new office will be opened.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q6" value="D"> (D) A new employee will begin.</label></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Track 121 -->
+        <div class="audio-group">
+            <h3>Audio 121 (Questions 7 - 9)</h3>
+            <div class="audio-player-wrapper">
+                <audio class="test-audio" controls controlsList="nodownload">
+                    <source src="https://github.com/tuyetngan031196-ctrl/toeic-listening/raw/refs/heads/main/121%20Track121.mp3" type="audio/mpeg">
+                </audio>
+                <div class="audio-note">Lưu ý: Audio chỉ có thể nghe 1 lần duy nhất.</div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">7. What are the speakers most likely doing?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q7" value="A"> (A) Having an interview</label></div>
+                    <div class="option-item"><label><input type="radio" name="q7" value="B"> (B) Discussing candidates</label></div>
+                    <div class="option-item"><label><input type="radio" name="q7" value="C"> (C) Haggling about prices</label></div>
+                    <div class="option-item"><label><input type="radio" name="q7" value="D"> (D) Holding negotiations</label></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">8. What does the man imply when he says, "That shouldn't be a problem"?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q8" value="A"> (A) He is confident in his ability.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q8" value="B"> (B) He knows he will always be on time.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q8" value="C"> (C) He has never had a problem at his old company.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q8" value="D"> (D) He never feels nervous.</label></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">9. What will happen on Monday?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q9" value="A"> (A) Training will begin.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q9" value="B"> (B) New sales will start.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q9" value="C"> (C) A hiring decision will be announced.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q9" value="D"> (D) Interviews will begin.</label></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PART C: SPEECHES / LECTURES -->
+        <h2 class="section-title">PART C: Speeches / Lectures</h2>
+
+        <!-- Track 141 -->
+        <div class="audio-group">
+            <h3>Audio 141 (Questions 10 - 12)</h3>
+            <div class="audio-player-wrapper">
+                <audio class="test-audio" controls controlsList="nodownload">
+                    <source src="https://github.com/tuyetngan031196-ctrl/toeic-listening/raw/refs/heads/main/141%20Track141.mp3" type="audio/mpeg">
+                </audio>
+                <div class="audio-note">Lưu ý: Audio chỉ có thể nghe 1 lần duy nhất.</div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">10. What is the purpose of the speech?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q10" value="A"> (A) To introduce new teachers</label></div>
+                    <div class="option-item"><label><input type="radio" name="q10" value="B"> (B) To choose award candidates</label></div>
+                    <div class="option-item"><label><input type="radio" name="q10" value="C"> (C) To do research on teachers</label></div>
+                    <div class="option-item"><label><input type="radio" name="q10" value="D"> (D) To announce award winners</label></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">11. According to the speaker, what have these teachers done?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q11" value="A"> (A) Helped the community</label></div>
+                    <div class="option-item"><label><input type="radio" name="q11" value="B"> (B) Participated in charity work</label></div>
+                    <div class="option-item"><label><input type="radio" name="q11" value="C"> (C) Voted on a policy</label></div>
+                    <div class="option-item"><label><input type="radio" name="q11" value="D"> (D) Traveled from far away</label></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">12. What is mentioned about the winners?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q12" value="A"> (A) They are chosen at random.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q12" value="B"> (B) Their schools will receive prize money.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q12" value="C"> (C) They are nominated by colleagues.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q12" value="D"> (D) They teach a variety of subjects.</label></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Track 142 -->
+        <div class="audio-group">
+            <h3>Audio 142 (Questions 13 - 15)</h3>
+            <div class="audio-player-wrapper">
+                <audio class="test-audio" controls controlsList="nodownload">
+                    <source src="https://github.com/tuyetngan031196-ctrl/toeic-listening/raw/refs/heads/main/142%20Track142.mp3" type="audio/mpeg">
+                </audio>
+                <div class="audio-note">Lưu ý: Audio chỉ có thể nghe 1 lần duy nhất.</div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">13. Who is Dr. Seung-Joon Kim?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q13" value="A"> (A) A researcher</label></div>
+                    <div class="option-item"><label><input type="radio" name="q13" value="B"> (B) A medical specialist</label></div>
+                    <div class="option-item"><label><input type="radio" name="q13" value="C"> (C) A conference organizer</label></div>
+                    <div class="option-item"><label><input type="radio" name="q13" value="D"> (D) A community professor</label></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">14. What will happen after the discussion?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q14" value="A"> (A) A special dinner will be held.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q14" value="B"> (B) A slideshow will be presented.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q14" value="C"> (C) A question-and-answer session will be held.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q14" value="D"> (D) A survey will be given out.</label></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">15. Where will the discussion take place?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q15" value="A"> (A) At a community center</label></div>
+                    <div class="option-item"><label><input type="radio" name="q15" value="B"> (B) At a city hospital</label></div>
+                    <div class="option-item"><label><input type="radio" name="q15" value="C"> (C) At a school auditorium</label></div>
+                    <div class="option-item"><label><input type="radio" name="q15" value="D"> (D) At a concert hall</label></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Track 143 -->
+        <div class="audio-group">
+            <h3>Audio 143 (Questions 16 - 18)</h3>
+            <div class="audio-player-wrapper">
+                <audio class="test-audio" controls controlsList="nodownload">
+                    <source src="https://github.com/tuyetngan031196-ctrl/toeic-listening/raw/refs/heads/main/143%20Track143.mp3" type="audio/mpeg">
+                </audio>
+                <div class="audio-note">Lưu ý: Audio chỉ có thể nghe 1 lần duy nhất.</div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">16. According to the speaker, what happened this year?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q16" value="A"> (A) An award was given out.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q16" value="B"> (B) A manager was hired.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q16" value="C"> (C) A play was put on.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q16" value="D"> (D) A workshop was created.</label></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">17. What does the speaker imply when she says, "After this training session, you'll see why"?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q17" value="A"> (A) The training session is individually led.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q17" value="B"> (B) The award is on display outside.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q17" value="C"> (C) A question-and-answer session will be held.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q17" value="D"> (D) The training is the reason for the award.</label></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">18. What is mentioned about the listeners?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q18" value="A"> (A) They recently sent out an e-mail.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q18" value="B"> (B) They are all new to the company.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q18" value="C"> (C) They were unhappy with the company's service.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q18" value="D"> (D) They have all received an award.</label></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Track 144 -->
+        <div class="audio-group">
+            <h3>Audio 144 (Questions 19 - 21)</h3>
+            <div class="audio-player-wrapper">
+                <audio class="test-audio" controls controlsList="nodownload">
+                    <source src="https://github.com/tuyetngan031196-ctrl/toeic-listening/raw/refs/heads/main/144%20Track144.mp3" type="audio/mpeg">
+                </audio>
+                <div class="audio-note">Lưu ý: Audio chỉ có thể nghe 1 lần duy nhất.</div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">19. What kind of event is being held?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q19" value="A"> (A) A retirement party</label></div>
+                    <div class="option-item"><label><input type="radio" name="q19" value="B"> (B) A holiday party</label></div>
+                    <div class="option-item"><label><input type="radio" name="q19" value="C"> (C) A charity dinner</label></div>
+                    <div class="option-item"><label><input type="radio" name="q19" value="D"> (D) An awards banquet</label></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">20. What is mentioned about the board of directors?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q20" value="A"> (A) They have never met Ms. Sardinez before.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q20" value="B"> (B) They were hesitant to hire Ms. Sardinez.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q20" value="C"> (C) They have over twenty members.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q20" value="D"> (D) They asked for Ms. Sardinez.</label></div>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-title">21. What is mentioned about the company?</div>
+                <div class="options-list">
+                    <div class="option-item"><label><input type="radio" name="q21" value="A"> (A) It had a rise in profits.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q21" value="B"> (B) It is a new company.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q21" value="C"> (C) It has more clients than it can handle.</label></div>
+                    <div class="option-item"><label><input type="radio" name="q21" value="D"> (D) It has global clients.</label></div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="submit-btn" id="btnSubmit" onclick="submitTest()">NỘP BÀI THI</button>
+    </form>
+
+    <div class="result-box" id="resultBox"></div>
+</div>
+
+<script>
+    // URL Google Apps Script đã được điền tự động
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/a/macros/passerellesnumeriques.org/s/AKfycbxOxWDyCrWGT7SvpoSf_lWfC1qEi0-qapEZzruVIk5yP2aDKB0_5ysgEA4smFZfUVk7/exec";
+
+    const correctAnswers = {
+        q1: "D", q2: "A", q3: "B",
+        q4: "A", q5: "D", q6: "C",
+        q7: "A", q8: "A", q9: "C",
+        q10: "D", q11: "A", q12: "D",
+        q13: "B", q14: "C", q15: "B",
+        q16: "A", q17: "D", q18: "B",
+        q19: "D", q20: "B", q21: "A"
+    };
+
+    // Đếm ngược 20 phút
+    let totalTime = 20 * 60;
+    const timerElement = document.getElementById('timer');
+
+    const countdown = setInterval(() => {
+        let minutes = Math.floor(totalTime / 60);
+        let seconds = totalTime % 60;
+        
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+        
+        timerElement.textContent = `Thời gian: ${minutes}:${seconds}`;
+        
+        if (totalTime <= 0) {
+            clearInterval(countdown);
+            alert("Đã hết thời gian làm bài!");
+            submitTest();
+        }
+        totalTime--;
+    }, 1000);
+
+    // Khóa audio sau 1 lượt nghe
+    const audioPlayers = document.querySelectorAll('.test-audio');
+    audioPlayers.forEach(audio => {
+        let hasPlayed = false;
+
+        audio.addEventListener('play', () => {
+            if (hasPlayed) {
+                audio.pause();
+                alert("Mỗi audio chỉ được phép nghe 1 lần duy nhất!");
+            }
+        });
+
+        audio.addEventListener('ended', () => {
+            hasPlayed = true;
+            audio.controls = false; 
+            const noteElem = audio.parentNode.querySelector('.audio-note');
+            if (noteElem) {
+                noteElem.textContent = "❌ Bạn đã hoàn thành lượt nghe duy nhất cho audio này.";
+                noteElem.style.color = "red";
+            }
+        });
+
+        audio.addEventListener('pause', () => {
+            if (audio.currentTime > 0 && !audio.ended) {
+                hasPlayed = true;
+            }
+        });
+    });
+
+    // Hàm Chấm điểm & Gửi dữ liệu về Google Sheet
+    function submitTest() {
+        const fullname = document.getElementById('fullname').value.trim();
+        const classname = document.getElementById('classname').value.trim();
+
+        if (!fullname || !classname) {
+            alert("Vui lòng nhập đầy đủ Họ và Tên và Lớp trước khi nộp bài!");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        clearInterval(countdown);
+        
+        let score = 0;
+        let totalQuestions = Object.keys(correctAnswers).length;
+
+        for (let q in correctAnswers) {
+            const selected = document.querySelector(`input[name="${q}"]:checked`);
+            if (selected && selected.value === correctAnswers[q]) {
+                score++;
+            }
+        }
+
+        // Vô hiệu hóa nút chọn & nút nộp bài
+        const inputs = document.querySelectorAll('input[type="radio"]');
+        inputs.forEach(input => input.disabled = true);
+        
+        const submitBtn = document.getElementById('btnSubmit');
+        submitBtn.disabled = true;
+        submitBtn.textContent = "ĐANG ĐỒNG BỘ ĐIỂM...";
+
+        // Gửi dữ liệu lên Google Sheet
+        const payload = {
+            fullname: fullname,
+            classname: classname,
+            score: score,
+            total: totalQuestions
+        };
+
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            submitBtn.textContent = "ĐÃ NỘP BÀI THÀNH CÔNG";
+            const resultBox = document.getElementById('resultBox');
+            resultBox.style.display = 'block';
+            resultBox.innerHTML = `Cảm ơn ${fullname} (${classname})!<br>Kết quả của bạn: <strong>${score} / ${totalQuestions}</strong> câu đúng.<br>Điểm số đã được tự động lưu vào hệ thống.`;
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        })
+        .catch(error => {
+            console.error('Lỗi:', error);
+            alert("Lỗi khi gửi dữ liệu về hệ thống. Hãy báo cho giáo viên!");
+        });
+    }
+</script>
+
+</body>
+</html>
